@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { FormField } from "./components/FormField";
-import { Label } from "./components/Label";
-import { Input } from "./components/Input";
-import { ErrorMsg } from "./components/ErrorMsg";
-import { TextArea } from "./components/Textarea";
+import { FormField } from "./_components/FormField";
+import { Label } from "./_components/Label";
+import { Input } from "./_components/Input";
+import { ErrorMsg } from "./_components/ErrorMsg";
+import { TextArea } from "./_components/Textarea";
 
 const ContactForm: React.FC = () => {
   type ValuesType = { name: string; mailAddress: string; content: string };
