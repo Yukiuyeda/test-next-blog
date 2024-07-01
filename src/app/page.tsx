@@ -3,21 +3,25 @@
 import React, { useEffect, useState } from "react";
 // import { posts } from '../../data/posts';
 import Link from "next/link";
-import { Post } from "@/app/types/post";
+// import { Post } from "@/app/types/post";
+import { MicroCmsPost } from "./types/MicroCmsPost";
 
 const Main: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<MicroCmsPost[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // APIでpostsを取得する処理をuseEffectで実行します。
   useEffect(() => {
     const fetcher = async () => {
-      const res = await fetch(
-        "https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/posts"
-      );
-      const data: { posts: Post[] } = await res.json();
+      //第一引数にエンドポイント、第二引数にheadersを設定できその中にAPI Keyを設定。
+      const res = await fetch("https://yjmn4gzmf8.microcms.io/api/v1/posts", {
+        headers: {
+          "X-MICROCMS-API-KEY": process.env.NEXT_PUBLIC_MICROCMS_API_KEY as string
+        },
+      });
+      const data: { contents: MicroCmsPost[] } = await res.json();
       // console.log(data);
-      setPosts(data.posts);
+      setPosts(data.contents);
       setIsLoading(false);
     };
 
@@ -46,10 +50,10 @@ const Main: React.FC = () => {
                         {post.categories.map((category) => {
                           return (
                             <li
-                              key={category}
+                              key={category.id}
                               className="text-[#0068D3] border border-[#0068D3] rounded text-[0.8rem] p-1 mr-2"
                             >
-                              {category}
+                              {category.name}
                             </li>
                           );
                         })}

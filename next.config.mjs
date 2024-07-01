@@ -4,9 +4,11 @@ const nextConfig = {
         remotePatterns: [
             {
                 protocol: 'https',
-                hostname: 'placehold.jp',
-                port: '',
-                pathname: '/800x400.png'
+                hostname: 'placehold.jp'
+            },
+            {
+                protocol: 'https',
+                hostname: 'images.microcms-assets.io'
             }
         ]
     }
