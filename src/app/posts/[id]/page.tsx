@@ -1,12 +1,13 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import type { Post } from "@/app/types/post";
+// import type { Post } from "@/app/types/post";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import { MicroCmsPost } from "@/app/types/MicroCmsPost";
 
 export const DetailPost: React.FC = () => {
-  const [post, setPost] = useState<Post | null>(null);
+  const [post, setPost] = useState<MicroCmsPost | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const { id } = useParams();
@@ -15,10 +16,16 @@ export const DetailPost: React.FC = () => {
   useEffect(() => {
     const fetcher = async () => {
       const res = await fetch(
-        `https://1hmfpsvto6.execute-api.ap-northeast-1.amazonaws.com/dev/posts/${id}`
+        `https://yjmn4gzmf8.microcms.io/api/v1/posts/${id}`,
+        {
+          headers: {
+            'X-MICROCMS-API-KEY': process.env.NEXT_PUBLIC_MICROCMS_API_KEY as string,
+          }
+        }
       );
-      const data: { post: Post } = await res.json();
-      setPost(data.post);
+      const data = await res.json();
+      // console.log(data);
+      setPost(data);
       setIsLoading(false);
     };
 
@@ -37,7 +44,7 @@ export const DetailPost: React.FC = () => {
 
   return (
     <div className="flex flex-col p-4 max-w-[800px] pt-10 mx-auto my-0">
-      <Image src={post.thumbnailUrl} alt="" width={800} height={400} />
+      <Image src={post.thumbnail.url} alt="" width={800} height={400} />
       <div className="pt-0 pr-4 pb-4 pl-4">
         <div className="mt-4 mb-2 flex justify-between items-center h-[27px]">
           <p className="text-[#999] text-[0.8rem]">
@@ -47,10 +54,10 @@ export const DetailPost: React.FC = () => {
             {post.categories.map((category) => {
               return (
                 <li
-                  key={category}
+                  key={category.id}
                   className="text-[#0068D3] border border-[#0068D3] text-[0.8rem] rounded p-[5px] mr-2"
                 >
-                  {category}
+                  {category.name}
                 </li>
               );
             })}
